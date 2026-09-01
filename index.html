@@ -1,0 +1,2686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CyberSense</title>
+
+<style>
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --cyan:#00e5ff;
+    --blue:#168cff;
+    --green:#53e6a0;
+    --bg:#03070c;
+    --panel:#08121b;
+    --text:#f2f8ff;
+    --muted:#718596;
+    --line:#19313f;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.grid{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+
+    background-image:
+        linear-gradient(
+            rgba(0,229,255,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,229,255,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:50px 50px;
+}
+
+.grid:after{
+    content:"";
+
+    position:fixed;
+
+    width:500px;
+    height:500px;
+
+    right:-200px;
+    bottom:-200px;
+
+    background:rgba(0,150,255,.08);
+
+    filter:blur(120px);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+    height:80px;
+
+    border-bottom:1px solid var(--line);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 6%;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:900;
+
+    letter-spacing:5px;
+}
+
+.status{
+    color:var(--cyan);
+
+    font-size:10px;
+
+    letter-spacing:2px;
+}
+
+
+/* =========================
+   PAGE SYSTEM
+========================= */
+
+.page{
+    display:none;
+
+    width:88%;
+    max-width:1100px;
+
+    margin:auto;
+
+    padding:70px 0;
+
+    min-height:calc(100vh - 80px);
+}
+
+.page.active{
+    display:block;
+}
+
+
+/* =========================
+   COMMON
+========================= */
+
+.tag{
+    color:var(--cyan);
+
+    letter-spacing:3px;
+
+    font-size:10px;
+
+    font-weight:bold;
+}
+
+.section-title{
+    border-left:3px solid var(--cyan);
+
+    padding-left:20px;
+
+    margin-bottom:45px;
+}
+
+.section-title span{
+    color:var(--cyan);
+
+    letter-spacing:3px;
+
+    font-size:10px;
+
+    font-weight:bold;
+}
+
+h2{
+    font-size:clamp(35px,5vw,65px);
+
+    margin-top:12px;
+
+    letter-spacing:-2px;
+}
+
+h2 span{
+    color:var(--cyan);
+}
+
+button{
+    background:var(--cyan);
+
+    color:#001018;
+
+    border:none;
+
+    padding:16px 25px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 0 25px rgba(0,229,255,.25);
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+.login-wrapper{
+    width:100%;
+    max-width:950px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:1fr 420px;
+
+    gap:70px;
+
+    align-items:center;
+}
+
+.login-header h1{
+    font-size:75px;
+
+    line-height:.9;
+
+    margin:20px 0;
+
+    letter-spacing:-4px;
+}
+
+.login-header h1 span{
+    color:var(--cyan);
+}
+
+.login-header p{
+    color:var(--muted);
+
+    max-width:400px;
+
+    line-height:1.7;
+
+    font-size:13px;
+}
+
+.login-card{
+    background:rgba(8,18,27,.95);
+
+    border:1px solid var(--line);
+
+    padding:35px;
+
+    position:relative;
+}
+
+.login-card:before{
+    content:"";
+
+    position:absolute;
+
+    top:-1px;
+    left:25px;
+
+    width:60px;
+    height:3px;
+
+    background:var(--cyan);
+}
+
+.login-card label{
+    display:block;
+
+    color:#7d91a0;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+    margin-bottom:8px;
+}
+
+.login-card input[type="email"],
+.login-card input[type="password"]{
+    width:100%;
+
+    height:48px;
+
+    background:#050d14;
+
+    border:1px solid var(--line);
+
+    color:white;
+
+    padding:0 15px;
+
+    outline:none;
+
+    font-size:13px;
+}
+
+.login-card input:focus{
+    border-color:var(--cyan);
+
+    box-shadow:
+        0 0 15px rgba(0,229,255,.08);
+}
+
+.password-label{
+    margin-top:20px;
+}
+
+.password-box{
+    position:relative;
+
+    margin-bottom:18px;
+}
+
+.password-box input{
+    padding-right:65px !important;
+}
+
+.show-password{
+    position:absolute;
+
+    right:0;
+    top:0;
+
+    height:48px;
+
+    padding:0 12px;
+
+    background:transparent;
+
+    color:var(--cyan);
+
+    border:none;
+
+    font-size:9px;
+
+    box-shadow:none;
+}
+
+.show-password:hover{
+    box-shadow:none;
+
+    transform:none;
+}
+
+.login-options-row{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:15px 0 22px;
+}
+
+.remember{
+    display:flex !important;
+
+    align-items:center;
+
+    gap:7px;
+
+    margin:0 !important;
+
+    letter-spacing:0 !important;
+}
+
+.remember input{
+    accent-color:var(--cyan);
+}
+
+.login-options-row a,
+.signup a{
+    color:var(--cyan);
+
+    text-decoration:none;
+
+    font-size:10px;
+}
+
+.main-login{
+    width:100%;
+}
+
+.or-divider{
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:22px 0;
+
+    color:#4d6473;
+
+    font-size:9px;
+}
+
+.or-divider:before,
+.or-divider:after{
+    content:"";
+
+    height:1px;
+
+    background:var(--line);
+
+    flex:1;
+}
+
+.social-login{
+    width:100%;
+
+    background:transparent;
+
+    color:white;
+
+    border:1px solid var(--line);
+
+    padding:14px;
+
+    font-size:12px;
+}
+
+.social-login:hover{
+    border-color:var(--cyan);
+
+    background:rgba(0,229,255,.04);
+}
+
+.social-login strong{
+    color:var(--cyan);
+
+    margin-right:8px;
+}
+
+.signup{
+    text-align:center;
+
+    color:#607686;
+
+    font-size:10px;
+
+    margin-top:22px;
+}
+
+
+/* =========================
+   NEW CYBERSENSE DASHBOARD
+========================= */
+
+.dashboard-hero{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    gap:40px;
+
+    margin-bottom:55px;
+}
+
+.dashboard-hero h1{
+    font-size:clamp(45px,7vw,82px);
+
+    line-height:.9;
+
+    letter-spacing:-4px;
+
+    margin:18px 0;
+}
+
+.dashboard-hero h1 span{
+    color:var(--cyan);
+}
+
+.dashboard-hero p{
+    color:var(--muted);
+
+    max-width:560px;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.security-indicator{
+    min-width:190px;
+
+    border:1px solid var(--line);
+
+    padding:20px;
+
+    background:rgba(8,18,27,.7);
+}
+
+.security-indicator small{
+    display:block;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+    margin-bottom:10px;
+}
+
+.security-indicator strong{
+    color:var(--green);
+
+    font-size:13px;
+
+    letter-spacing:1px;
+}
+
+.dashboard-line{
+    height:1px;
+
+    background:var(--line);
+
+    margin-bottom:25px;
+}
+
+.dashboard-label{
+    color:var(--muted);
+
+    font-size:9px;
+
+    letter-spacing:3px;
+
+    margin-bottom:18px;
+}
+
+.dashboard-grid{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+
+    margin-bottom:35px;
+}
+
+.dashboard-card{
+    background:rgba(8,18,27,.8);
+
+    border:1px solid var(--line);
+
+    padding:28px;
+
+    min-height:160px;
+}
+
+.dashboard-card:hover{
+    border-color:#245263;
+}
+
+.dashboard-card small{
+    color:var(--muted);
+
+    letter-spacing:2px;
+
+    font-size:9px;
+}
+
+.dashboard-card h3{
+    color:var(--cyan);
+
+    font-size:24px;
+
+    margin:18px 0 8px;
+}
+
+.dashboard-card p{
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.6;
+}
+
+.dashboard-card .green{
+    color:var(--green);
+}
+
+.dashboard-action{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    border:1px solid var(--line);
+
+    background:rgba(0,229,255,.035);
+
+    padding:28px 30px;
+
+    gap:20px;
+}
+
+.dashboard-action h3{
+    margin-bottom:7px;
+
+    font-size:17px;
+}
+
+.dashboard-action p{
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+
+/* =========================
+   APPS
+========================= */
+
+.app-grid{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:18px;
+
+    margin-bottom:35px;
+}
+
+.app-card{
+    background:rgba(8,18,27,.8);
+
+    border:1px solid var(--line);
+
+    padding:25px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.app-card:hover,
+.app-card.selected{
+    border-color:var(--cyan);
+
+    box-shadow:
+        0 0 20px rgba(0,229,255,.08);
+}
+
+.app-card.selected{
+    background:rgba(0,229,255,.07);
+}
+
+.app-icon{
+    width:45px;
+    height:45px;
+
+    border:1px solid var(--cyan);
+
+    display:grid;
+
+    place-items:center;
+
+    color:var(--cyan);
+
+    font-weight:bold;
+
+    margin-bottom:18px;
+}
+
+.app-card h3{
+    margin-bottom:7px;
+}
+
+.app-card span{
+    font-size:9px;
+
+    color:var(--muted);
+
+    letter-spacing:2px;
+}
+
+
+/* =========================
+   BEHAVIOR
+========================= */
+
+.wide-text,
+.instruction{
+    color:var(--muted);
+
+    max-width:650px;
+
+    line-height:1.7;
+
+    margin-bottom:30px;
+}
+
+.test{
+    padding:25px;
+
+    display:grid;
+
+    grid-template-columns:50px 1fr auto;
+
+    align-items:center;
+
+    margin-bottom:10px;
+
+    background:rgba(8,18,27,.8);
+
+    border:1px solid var(--line);
+}
+
+.test > span{
+    color:var(--cyan);
+
+    font-weight:bold;
+}
+
+.test h3{
+    font-size:14px;
+
+    letter-spacing:1px;
+}
+
+.test p{
+    color:var(--muted);
+
+    font-size:11px;
+
+    margin-top:5px;
+}
+
+.test b{
+    color:var(--green);
+
+    font-size:9px;
+
+    letter-spacing:2px;
+}
+
+
+/* =========================
+   TYPING
+========================= */
+
+.typing-target{
+    padding:25px;
+
+    border:1px solid var(--line);
+
+    color:var(--cyan);
+
+    margin-bottom:15px;
+
+    font-size:18px;
+}
+
+textarea{
+    width:100%;
+
+    height:130px;
+
+    resize:none;
+
+    background:#050d14;
+
+    border:1px solid var(--line);
+
+    color:white;
+
+    padding:20px;
+
+    outline:none;
+
+    font-size:16px;
+}
+
+textarea:focus{
+    border-color:var(--cyan);
+}
+
+
+/* =========================
+   METRICS
+========================= */
+
+.metrics{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+    margin:20px 0 30px;
+}
+
+.metrics > div{
+    border:1px solid var(--line);
+
+    padding:20px;
+}
+
+.metrics small{
+    color:var(--muted);
+
+    letter-spacing:2px;
+
+    font-size:9px;
+}
+
+.metrics strong{
+    display:block;
+
+    color:var(--cyan);
+
+    margin-top:8px;
+}
+
+
+/* =========================
+   MOUSE
+========================= */
+
+canvas{
+    width:100%;
+
+    height:350px;
+
+    border:1px solid var(--line);
+
+    background:#050d14;
+
+    cursor:crosshair;
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-box{
+    background:rgba(8,18,27,.8);
+
+    border:1px solid var(--line);
+
+    padding:35px;
+
+    margin-bottom:30px;
+}
+
+.profile-id{
+    border-bottom:1px solid var(--line);
+
+    padding-bottom:25px;
+
+    margin-bottom:25px;
+}
+
+.profile-id small{
+    color:var(--muted);
+
+    letter-spacing:2px;
+
+    font-size:9px;
+}
+
+.profile-id strong{
+    display:block;
+
+    color:var(--cyan);
+
+    font-size:35px;
+
+    margin-top:10px;
+
+    letter-spacing:4px;
+}
+
+.profile-bars > div{
+    display:grid;
+
+    grid-template-columns:180px 1fr 60px;
+
+    gap:15px;
+
+    align-items:center;
+
+    margin:18px 0;
+
+    font-size:10px;
+}
+
+.bar{
+    height:5px;
+
+    background:#12232e;
+}
+
+.bar i{
+    display:block;
+
+    height:100%;
+
+    background:var(--cyan);
+}
+
+.profile-bars b{
+    color:var(--cyan);
+}
+
+.overall{
+    border-top:1px solid var(--line);
+
+    margin-top:30px;
+
+    padding-top:25px;
+}
+
+.overall small{
+    color:var(--muted);
+
+    letter-spacing:2px;
+
+    font-size:9px;
+}
+
+.overall strong{
+    display:block;
+
+    font-size:50px;
+
+    color:var(--cyan);
+
+    margin-top:8px;
+}
+
+
+/* =========================
+   COMPLETE
+========================= */
+
+.complete{
+    padding-top:50px;
+}
+
+.check{
+    width:70px;
+    height:70px;
+
+    border:2px solid var(--green);
+
+    color:var(--green);
+
+    display:grid;
+
+    place-items:center;
+
+    font-size:35px;
+
+    margin-bottom:30px;
+}
+
+.complete h1{
+    font-size:70px;
+
+    margin:25px 0;
+
+    line-height:.95;
+}
+
+.complete h1 span{
+    color:var(--cyan);
+}
+
+.complete p{
+    max-width:600px;
+
+    color:var(--muted);
+
+    line-height:1.7;
+
+    margin-bottom:25px;
+}
+
+.protected-list{
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:30px;
+}
+
+.protected-list div{
+    border:1px solid var(--line);
+
+    padding:15px 20px;
+
+    color:var(--green);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+    .login-wrapper{
+        grid-template-columns:1fr;
+
+        gap:35px;
+
+        max-width:500px;
+    }
+
+    .login-header h1{
+        font-size:55px;
+    }
+
+    .dashboard-hero{
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .dashboard-action{
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .app-grid{
+        grid-template-columns:1fr;
+    }
+
+    .metrics{
+        grid-template-columns:1fr;
+    }
+
+    .profile-bars > div{
+        grid-template-columns:1fr;
+    }
+
+    .complete h1{
+        font-size:50px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="grid"></div>
+
+
+<header>
+
+    <div class="brand">
+        ◈ CYBERSENSE
+    </div>
+
+    <div class="status">
+        ● SYSTEM ONLINE
+    </div>
+
+</header>
+
+
+<main>
+
+
+<!-- ==================================================
+     LOGIN
+================================================== -->
+
+<section id="login" class="page active">
+
+    <div class="login-wrapper">
+
+
+        <div class="login-header">
+
+            <div class="tag">
+                BEHAVIOR-BASED SECURITY
+            </div>
+
+            <h1>
+                SECURITY<br>
+                <span>THAT KNOWS YOU.</span>
+            </h1>
+
+            <p>
+                Protect your applications and websites
+                using the way you naturally interact
+                with your device.
+            </p>
+
+        </div>
+
+
+        <div class="login-card">
+
+            <label>
+                EMAIL ADDRESS
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+            >
+
+
+            <label class="password-label">
+                PASSWORD
+            </label>
+
+            <div class="password-box">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                >
+
+                <button
+                    type="button"
+                    class="show-password"
+                    onclick="togglePassword()"
+                >
+                    SHOW
+                </button>
+
+            </div>
+
+
+            <div class="login-options-row">
+
+                <label class="remember">
+
+                    <input type="checkbox">
+
+                    Remember me
+
+                </label>
+
+
+                <a
+                    href="#"
+                    onclick="forgotPassword();return false;"
+                >
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+            <button
+                class="main-login"
+                onclick="login()"
+            >
+                SIGN IN →
+            </button>
+
+
+            <div class="or-divider">
+                <span>OR</span>
+            </div>
+
+
+            <button
+                class="social-login"
+                onclick="googleLogin()"
+            >
+                <strong>G</strong>
+                Continue with Google
+            </button>
+
+
+            <p class="signup">
+
+                Don't have an account?
+
+                <a
+                    href="#"
+                    onclick="createAccount();return false;"
+                >
+                    Create account
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     CYBERSENSE CONTROL CENTER
+================================================== -->
+
+<section id="dashboard" class="page">
+
+
+    <div class="dashboard-hero">
+
+        <div>
+
+            <div class="tag">
+                CYBERSENSE / CONTROL CENTER
+            </div>
+
+            <h1>
+                YOUR BEHAVIOR<br>
+                <span>IS YOUR KEY.</span>
+            </h1>
+
+            <p>
+                CyberSense learns the way you interact
+                with your device and uses your unique
+                behavior as an additional layer of security.
+            </p>
+
+        </div>
+
+
+        <div class="security-indicator">
+
+            <small>
+                SECURITY STATUS
+            </small>
+
+            <strong>
+                ● SYSTEM READY
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-line"></div>
+
+
+    <div class="dashboard-label">
+        SECURITY OVERVIEW
+    </div>
+
+
+    <div class="dashboard-grid">
+
+
+        <div class="dashboard-card">
+
+            <small>
+                BEHAVIOR PROFILE
+            </small>
+
+            <h3 id="profileStatus">
+                NOT CONFIGURED
+            </h3>
+
+            <p>
+                Your unique behavioral identity
+                has not been created yet.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <small>
+                PROTECTED ITEMS
+            </small>
+
+            <h3 id="protectedCount">
+                0
+            </h3>
+
+            <p>
+                Applications and websites
+                currently protected.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <small>
+                PROTECTION ENGINE
+            </small>
+
+            <h3 class="green">
+                STANDBY
+            </h3>
+
+            <p>
+                Ready to activate behavior-based
+                authentication.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-action">
+
+        <div>
+
+            <h3>
+                Configure your protection
+            </h3>
+
+            <p>
+                Select the applications or websites
+                you want CyberSense to protect.
+            </p>
+
+        </div>
+
+
+        <button onclick="showPage('protect')">
+
+            + SELECT APPS TO PROTECT
+
+        </button>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ==================================================
+     APP SELECTION
+================================================== -->
+
+<section id="protect" class="page">
+
+
+    <div class="section-title">
+
+        <span>
+            01 / PROTECTION TARGET
+        </span>
+
+        <h2>
+            SELECT WHAT TO
+            <span>PROTECT.</span>
+        </h2>
+
+    </div>
+
+
+    <p class="wide-text">
+
+        Choose the applications and websites
+        where you want CyberSense behavior-based
+        protection to be active.
+
+    </p>
+
+
+    <div class="app-grid">
+
+
+        <div
+            class="app-card"
+            onclick="toggleApp(this)"
+        >
+
+            <div class="app-icon">
+                W
+            </div>
+
+            <h3>
+                WhatsApp
+            </h3>
+
+            <span>
+                APPLICATION
+            </span>
+
+        </div>
+
+
+        <div
+            class="app-card"
+            onclick="toggleApp(this)"
+        >
+
+            <div class="app-icon">
+                G
+            </div>
+
+            <h3>
+                Gallery
+            </h3>
+
+            <span>
+                APPLICATION
+            </span>
+
+        </div>
+
+
+        <div
+            class="app-card"
+            onclick="toggleApp(this)"
+        >
+
+            <div class="app-icon">
+                F
+            </div>
+
+            <h3>
+                Files
+            </h3>
+
+            <span>
+                APPLICATION
+            </span>
+
+        </div>
+
+
+        <div
+            class="app-card"
+            onclick="toggleApp(this)"
+        >
+
+            <div class="app-icon">
+                G
+            </div>
+
+            <h3>
+                Gmail
+            </h3>
+
+            <span>
+                WEBSITE
+            </span>
+
+        </div>
+
+
+        <div
+            class="app-card"
+            onclick="toggleApp(this)"
+        >
+
+            <div class="app-icon">
+                I
+            </div>
+
+            <h3>
+                Instagram
+            </h3>
+
+            <span>
+                WEBSITE
+            </span>
+
+        </div>
+
+
+        <div
+            class="app-card"
+            onclick="toggleApp(this)"
+        >
+
+            <div class="app-icon">
+                B
+            </div>
+
+            <h3>
+                Banking
+            </h3>
+
+            <span>
+                WEBSITE
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <button onclick="startBehavior()">
+
+        CONTINUE → DESIGN BEHAVIOR
+
+    </button>
+
+
+</section>
+
+
+
+<!-- ==================================================
+     BEHAVIOR SETUP
+================================================== -->
+
+<section id="behavior" class="page">
+
+
+    <div class="section-title">
+
+        <span>
+            02 / BEHAVIOR REGISTRATION
+        </span>
+
+        <h2>
+            DESIGN YOUR
+            <span>BEHAVIOR.</span>
+        </h2>
+
+    </div>
+
+
+    <p class="wide-text">
+
+        CyberSense studies how you naturally interact
+        with your device. Complete the tests below
+        to create your unique behavioral pattern.
+
+    </p>
+
+
+    <div class="test">
+
+
+        <span>
+            01
+        </span>
+
+
+        <div>
+
+            <h3>
+                KEYSTROKE DYNAMICS
+            </h3>
+
+            <p>
+                Typing speed, rhythm, key intervals
+                and keystroke timing.
+            </p>
+
+        </div>
+
+
+        <b>
+            READY
+        </b>
+
+    </div>
+
+
+    <div class="test">
+
+
+        <span>
+            02
+        </span>
+
+
+        <div>
+
+            <h3>
+                MOUSE MOVEMENT
+            </h3>
+
+            <p>
+                Movement speed, direction,
+                distance and smoothness.
+            </p>
+
+        </div>
+
+
+        <b>
+            READY
+        </b>
+
+    </div>
+
+
+    <div class="test">
+
+
+        <span>
+            03
+        </span>
+
+
+        <div>
+
+            <h3>
+                BEHAVIOR PROFILE
+            </h3>
+
+            <p>
+                Combine the collected signals into
+                your unique behavior pattern.
+            </p>
+
+        </div>
+
+
+        <b>
+            READY
+        </b>
+
+    </div>
+
+
+    <br>
+
+
+    <button onclick="startTyping()">
+
+        START BEHAVIOR TEST →
+
+    </button>
+
+
+</section>
+
+
+
+<!-- ==================================================
+     TYPING TEST
+================================================== -->
+
+<section id="typing" class="page">
+
+
+    <div class="section-title">
+
+        <span>
+            03 / BEHAVIOR TEST
+        </span>
+
+        <h2>
+            KEYSTROKE
+            <span>DYNAMICS.</span>
+        </h2>
+
+    </div>
+
+
+    <p class="instruction">
+
+        Type the sentence naturally.
+        CyberSense measures your typing behavior
+        without changing the way you normally type.
+
+    </p>
+
+
+    <div class="typing-target">
+
+        CyberSense protects my digital world.
+
+    </div>
+
+
+    <textarea
+        id="typingInput"
+        placeholder="Start typing here..."
+        onkeydown="recordKeyDown(event)"
+        onkeyup="recordKeyUp(event)"
+    ></textarea>
+
+
+    <div class="metrics">
+
+
+        <div>
+
+            <small>
+                TYPING SPEED
+            </small>
+
+            <strong id="speed">
+                0 WPM
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                KEY EVENTS
+            </small>
+
+            <strong id="keys">
+                0
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                AVG INTERVAL
+            </small>
+
+            <strong id="interval">
+                0 ms
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <button onclick="finishTyping()">
+
+        CONTINUE → MOUSE TEST
+
+    </button>
+
+
+</section>
+
+
+
+<!-- ==================================================
+     MOUSE TEST
+================================================== -->
+
+<section id="mouse" class="page">
+
+
+    <div class="section-title">
+
+        <span>
+            04 / BEHAVIOR TEST
+        </span>
+
+        <h2>
+            MOUSE
+            <span>MOVEMENT.</span>
+        </h2>
+
+    </div>
+
+
+    <p class="instruction">
+
+        Move your mouse naturally inside the area.
+        Draw a few shapes and curves to allow
+        CyberSense to analyze your movement pattern.
+
+    </p>
+
+
+    <canvas id="mouseCanvas"></canvas>
+
+
+    <div class="metrics">
+
+
+        <div>
+
+            <small>
+                MOVEMENT EVENTS
+            </small>
+
+            <strong id="mouseMoves">
+                0
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                DISTANCE
+            </small>
+
+            <strong id="mouseDistance">
+                0 px
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                TEST TIME
+            </small>
+
+            <strong id="mouseTime">
+                0 sec
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <button onclick="finishMouse()">
+
+        GENERATE BEHAVIOR PROFILE →
+
+    </button>
+
+
+</section>
+
+
+
+<!-- ==================================================
+     BEHAVIOR PROFILE
+================================================== -->
+
+<section id="profile" class="page">
+
+
+    <div class="section-title">
+
+        <span>
+            05 / BEHAVIOR ANALYSIS
+        </span>
+
+        <h2>
+            YOUR
+            <span>BEHAVIOR PATTERN.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="profile-box">
+
+
+        <div class="profile-id">
+
+            <small>
+                UNIQUE BEHAVIOR ID
+            </small>
+
+            <strong id="behaviorID">
+                CS-000000
+            </strong>
+
+        </div>
+
+
+        <div class="profile-bars">
+
+
+            <div>
+
+                <span>
+                    KEYSTROKE
+                </span>
+
+                <div class="bar">
+                    <i style="width:88%"></i>
+                </div>
+
+                <b>
+                    88%
+                </b>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    MOUSE MOVEMENT
+                </span>
+
+                <div class="bar">
+                    <i style="width:94%"></i>
+                </div>
+
+                <b>
+                    94%
+                </b>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    RHYTHM
+                </span>
+
+                <div class="bar">
+                    <i style="width:91%"></i>
+                </div>
+
+                <b>
+                    91%
+                </b>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    BIOMETRIC
+                </span>
+
+                <div class="bar">
+                    <i style="width:100%"></i>
+                </div>
+
+                <b>
+                    READY
+                </b>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="overall">
+
+            <small>
+                OVERALL PROFILE STRENGTH
+            </small>
+
+            <strong>
+                91%
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <button onclick="applyProtection()">
+
+        MAKE DEFAULT PROTECTOR →
+
+    </button>
+
+
+</section>
+
+
+
+<!-- ==================================================
+     COMPLETE
+================================================== -->
+
+<section id="complete" class="page">
+
+
+    <div class="complete">
+
+
+        <div class="check">
+            ✓
+        </div>
+
+
+        <div class="tag">
+            PROTECTION ACTIVE
+        </div>
+
+
+        <h1>
+
+            YOUR DIGITAL<br>
+
+            <span>
+                SPACE IS SECURED.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Your unique behavioral pattern has been
+            registered as the default authentication
+            layer for your selected applications
+            and websites.
+
+        </p>
+
+
+        <div
+            class="protected-list"
+            id="protectedList"
+        >
+
+        </div>
+
+
+        <button onclick="showPage('dashboard')">
+
+            BACK TO CONTROL CENTER
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================
+   VARIABLES
+========================= */
+
+let selectedApps = [];
+
+let keyTimes = [];
+
+let keyDownTimes = {};
+
+let typingStart = null;
+
+let mouseMoves = 0;
+
+let mouseDistance = 0;
+
+let lastMouseX = null;
+
+let lastMouseY = null;
+
+let mouseStart = null;
+
+
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function showPage(id){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+
+            page.classList.remove("active");
+
+        });
+
+
+    const page =
+        document.getElementById(id);
+
+
+    if(page){
+
+        page.classList.add("active");
+
+    }
+
+
+    window.scrollTo(0,0);
+
+}
+
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+    const email =
+        document.getElementById("email");
+
+    const password =
+        document.getElementById("password");
+
+
+    if(email.value.trim()===""){
+
+        alert("Please enter your email address.");
+
+        email.focus();
+
+        return;
+
+    }
+
+
+    if(password.value.trim()===""){
+
+        alert("Please enter your password.");
+
+        password.focus();
+
+        return;
+
+    }
+
+
+    showPage("dashboard");
+
+}
+
+
+function togglePassword(){
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.querySelector(".show-password");
+
+
+    if(password.type==="password"){
+
+        password.type="text";
+
+        button.textContent="HIDE";
+
+    }
+    else{
+
+        password.type="password";
+
+        button.textContent="SHOW";
+
+    }
+
+}
+
+
+function googleLogin(){
+
+    alert(
+        "Google authentication will be connected in the next version."
+    );
+
+}
+
+
+function forgotPassword(){
+
+    alert(
+        "Password recovery will be connected in the next version."
+    );
+
+}
+
+
+function createAccount(){
+
+    alert(
+        "Account creation will be connected in the next version."
+    );
+
+}
+
+
+
+/* =========================
+   APP SELECTION
+========================= */
+
+function toggleApp(card){
+
+    const name =
+        card.querySelector("h3").textContent;
+
+
+    card.classList.toggle("selected");
+
+
+    if(card.classList.contains("selected")){
+
+        if(!selectedApps.includes(name)){
+
+            selectedApps.push(name);
+
+        }
+
+    }
+    else{
+
+        selectedApps =
+            selectedApps.filter(
+                app => app!==name
+            );
+
+    }
+
+
+    document.getElementById("protectedCount")
+        .textContent =
+        selectedApps.length;
+
+}
+
+
+
+/* =========================
+   START BEHAVIOR
+========================= */
+
+function startBehavior(){
+
+    if(selectedApps.length===0){
+
+        alert(
+            "Please select at least one application or website."
+        );
+
+        return;
+
+    }
+
+
+    showPage("behavior");
+
+}
+
+
+
+/* =========================
+   TYPING TEST
+========================= */
+
+function startTyping(){
+
+    showPage("typing");
+
+
+    keyTimes=[];
+
+    keyDownTimes={};
+
+    typingStart=null;
+
+
+    const input =
+        document.getElementById("typingInput");
+
+
+    input.value="";
+
+    input.focus();
+
+
+    document.getElementById("speed")
+        .textContent="0 WPM";
+
+
+    document.getElementById("keys")
+        .textContent="0";
+
+
+    document.getElementById("interval")
+        .textContent="0 ms";
+
+}
+
+
+function recordKeyDown(event){
+
+    if(!typingStart){
+
+        typingStart =
+            performance.now();
+
+    }
+
+
+    keyDownTimes[event.key] =
+        performance.now();
+
+}
+
+
+function recordKeyUp(event){
+
+    const now =
+        performance.now();
+
+
+    if(
+        keyDownTimes[event.key] !== undefined
+    ){
+
+        keyTimes.push({
+
+            key:event.key,
+
+            time:now,
+
+            hold:
+                now -
+                keyDownTimes[event.key]
+
+        });
+
+
+        delete keyDownTimes[event.key];
+
+    }
+
+
+    updateTypingMetrics();
+
+}
+
+
+function updateTypingMetrics(){
+
+    const input =
+        document.getElementById("typingInput");
+
+
+    if(!typingStart){
+
+        return;
+
+    }
+
+
+    const elapsed =
+        (performance.now()-typingStart)
+        /60000;
+
+
+    const characters =
+        input.value.length;
+
+
+    let wpm=0;
+
+
+    if(elapsed>0){
+
+        wpm =
+            Math.round(
+                (characters/5)/elapsed
+            );
+
+    }
+
+
+    document.getElementById("speed")
+        .textContent =
+        wpm+" WPM";
+
+
+    document.getElementById("keys")
+        .textContent =
+        keyTimes.length;
+
+
+    if(keyTimes.length>1){
+
+        let total=0;
+
+
+        for(
+            let i=1;
+            i<keyTimes.length;
+            i++
+        ){
+
+            total +=
+                keyTimes[i].time -
+                keyTimes[i-1].time;
+
+        }
+
+
+        const average =
+            total/(keyTimes.length-1);
+
+
+        document.getElementById("interval")
+            .textContent =
+            Math.round(average)+" ms";
+
+    }
+
+}
+
+
+function finishTyping(){
+
+    if(keyTimes.length<5){
+
+        alert(
+            "Please type a little more so CyberSense can analyze your behavior."
+        );
+
+        return;
+
+    }
+
+
+    showPage("mouse");
+
+    startMouseTracking();
+
+}
+
+
+
+/* =========================
+   MOUSE TEST
+========================= */
+
+function startMouseTracking(){
+
+    mouseMoves=0;
+
+    mouseDistance=0;
+
+    lastMouseX=null;
+
+    lastMouseY=null;
+
+    mouseStart =
+        performance.now();
+
+
+    const canvas =
+        document.getElementById("mouseCanvas");
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    canvas.width =
+        canvas.clientWidth;
+
+    canvas.height =
+        canvas.clientHeight;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    canvas.onmousemove =
+        function(event){
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            const x =
+                event.clientX -
+                rect.left;
+
+
+            const y =
+                event.clientY -
+                rect.top;
+
+
+            mouseMoves++;
+
+
+            if(
+                lastMouseX!==null &&
+                lastMouseY!==null
+            ){
+
+                const dx =
+                    x-lastMouseX;
+
+                const dy =
+                    y-lastMouseY;
+
+
+                const distance =
+                    Math.sqrt(
+                        dx*dx+
+                        dy*dy
+                    );
+
+
+                mouseDistance +=
+                    distance;
+
+
+                ctx.beginPath();
+
+
+                ctx.moveTo(
+                    lastMouseX,
+                    lastMouseY
+                );
+
+
+                ctx.lineTo(x,y);
+
+
+                ctx.strokeStyle =
+                    "#00e5ff";
+
+
+                ctx.lineWidth=2;
+
+
+                ctx.stroke();
+
+            }
+
+
+            lastMouseX=x;
+
+            lastMouseY=y;
+
+
+            document.getElementById("mouseMoves")
+                .textContent =
+                mouseMoves;
+
+
+            document.getElementById("mouseDistance")
+                .textContent =
+                Math.round(mouseDistance)
+                +" px";
+
+
+            const seconds =
+                (
+                    performance.now() -
+                    mouseStart
+                )/1000;
+
+
+            document.getElementById("mouseTime")
+                .textContent =
+                seconds.toFixed(1)
+                +" sec";
+
+        };
+
+}
+
+
+function finishMouse(){
+
+    if(mouseMoves<20){
+
+        alert(
+            "Please move your mouse around a little more."
+        );
+
+        return;
+
+    }
+
+
+    createProfile();
+
+}
+
+
+
+/* =========================
+   CREATE PROFILE
+========================= */
+
+function createProfile(){
+
+    showPage("profile");
+
+
+    const id =
+        "CS-"+
+        Math.random()
+            .toString(36)
+            .substring(2,8)
+            .toUpperCase();
+
+
+    document.getElementById("behaviorID")
+        .textContent=id;
+
+
+    document.getElementById("profileStatus")
+        .textContent="CREATED";
+
+}
+
+
+
+/* =========================
+   APPLY PROTECTION
+========================= */
+
+function applyProtection(){
+
+    localStorage.setItem(
+        "cybersenseProtectedApps",
+        JSON.stringify(selectedApps)
+    );
+
+
+    const list =
+        document.getElementById("protectedList");
+
+
+    list.innerHTML="";
+
+
+    selectedApps.forEach(app => {
+
+        const item =
+            document.createElement("div");
+
+
+        item.textContent =
+            "✓ "+app;
+
+
+        list.appendChild(item);
+
+    });
+
+
+    showPage("complete");
+
+}
+
+</script>
+
+
+</body>
+</html>
